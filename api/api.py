@@ -36,7 +36,7 @@ def show(id):
 
 @app.route('/api/<int:id>', methods=['POST'])
 def delete(id):
-  request_data = json.load(request.data)
+  request_data = json.loads(request.data)
   Todo.query.filter_by(id=request_data['id']).delete()
   db.session.commit()
   return {'204': 'item was successfully deleted'}
