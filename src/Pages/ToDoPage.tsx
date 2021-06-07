@@ -40,7 +40,7 @@ export const TodoPage = () => {
   return (
     <Fragment>
       <Form content={addTodo} onFromChange={handleFormChange} setAddTodo={setAddTodo} setTodo={setTodo} />
-      <Card todos={todo} />
+      <Card todos={todo} setTodo={setTodo} />
     </Fragment>
 
   );
