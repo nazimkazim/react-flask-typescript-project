@@ -3,6 +3,7 @@ import { Card } from '../Components/Card/card';
 import Form from '../Components/Form/form';
 import { getTodos, deleteItem, postTodos } from '../actions/todos'
 import { connect } from 'react-redux';
+import Dialog from '../Components/Dialog'
 
 /* interface ParentStateItem {
   todo: Array
@@ -24,13 +25,13 @@ interface UserInput {
 
 
 const TodoPage: React.FC<Todos> = ({ todos, getTodos, deleteItem, postTodos }) => {
-  const [addTodo, setAddTodo] = useState<UserInput["content"]>("")
+  const [addTodo, setAddTodo] = useState<UserInput["content"]>("");
+  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [chosenTask, setChosenTask] = useState('')
 
   useEffect(() => {
     getTodos()
   }, [getTodos])
-
-  console.log(todos)
 
   const handleFormChange = (inputValue: string) => {
     setAddTodo(inputValue)
@@ -38,6 +39,11 @@ const TodoPage: React.FC<Todos> = ({ todos, getTodos, deleteItem, postTodos }) =
 
   return (
     <Fragment>
+      <Dialog
+        openUpdateDialog={openUpdateDialog}
+        setOpenUpdateDialog={setOpenUpdateDialog}
+        chosenTask={chosenTask}
+      />
       <Form
         content={addTodo}
         onFromChange={handleFormChange}
@@ -45,7 +51,12 @@ const TodoPage: React.FC<Todos> = ({ todos, getTodos, deleteItem, postTodos }) =
         postTodos={postTodos}
         getTodos={getTodos}
       />
-      <Card todos={todos} deleteItem={deleteItem} />
+      <Card
+        todos={todos}
+        deleteItem={deleteItem}
+        setOpenUpdateDialog={setOpenUpdateDialog}
+        setChosenTask={setChosenTask}
+      />
     </Fragment>
 
   );
