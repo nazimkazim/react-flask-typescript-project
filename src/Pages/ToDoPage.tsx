@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Card } from '../Components/Card/card';
 import Form from '../Components/Form/form';
-import { getTodos, deleteItem, postTodos } from '../actions/todos'
+import { getTodos, deleteItem, postTodos, updateItem } from '../actions/todos'
 import { connect } from 'react-redux';
 import Dialog from '../Components/Dialog'
 
@@ -16,7 +16,8 @@ interface Todos {
   }[],
   getTodos: any,
   deleteItem: any,
-  postTodos: any
+  postTodos: any,
+  updateItem: any
 }
 
 interface UserInput {
@@ -24,7 +25,7 @@ interface UserInput {
 }
 
 
-const TodoPage: React.FC<Todos> = ({ todos, getTodos, deleteItem, postTodos }) => {
+const TodoPage: React.FC<Todos> = ({ todos, getTodos, deleteItem, postTodos, updateItem }) => {
   const [addTodo, setAddTodo] = useState<UserInput["content"]>("");
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [chosenTask, setChosenTask] = useState('')
@@ -43,6 +44,9 @@ const TodoPage: React.FC<Todos> = ({ todos, getTodos, deleteItem, postTodos }) =
         openUpdateDialog={openUpdateDialog}
         setOpenUpdateDialog={setOpenUpdateDialog}
         chosenTask={chosenTask}
+        setAddTodo={setAddTodo}
+        addTodo={addTodo}
+        updateItem={updateItem}
       />
       <Form
         content={addTodo}
@@ -66,4 +70,4 @@ const mapStateToProps = (state: { todoReducer: { todos: []; }; }) => ({
   todos: state.todoReducer.todos
 })
 
-export default connect(mapStateToProps, { getTodos, deleteItem, postTodos })(TodoPage)
+export default connect(mapStateToProps, { getTodos, deleteItem, postTodos, updateItem })(TodoPage)

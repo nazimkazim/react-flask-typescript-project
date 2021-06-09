@@ -29,12 +29,30 @@ export const postTodos = (content) => async dispatch => {
   }
 };
 
-export const deleteItem = (id, onSuccess) => async dispatch => {
+export const deleteItem = (id) => async dispatch => {
   await fetch(`/api/${id}`, {
     method: 'POST',
     body: JSON.stringify({
-      id: id
-    })
+      id
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  });
+  dispatch(
+    getTodos()
+  );
+};
+
+export const updateItem = (id, task) => async dispatch => {
+  await fetch(`/api?taskId=${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      content: task
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
   });
   dispatch(
     getTodos()

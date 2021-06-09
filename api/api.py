@@ -12,15 +12,18 @@ class Todo(db.Model):
   def __str__(self):
     return f'{self.id} {self.content}'
 
+
 def todo_serializer(todo):
   return {
     'id':todo.id,
     'content':todo.content
   }
 
+
 @app.route('/api', methods=['GET'])
 def index():
   return jsonify([*map(todo_serializer, Todo.query.all() )])
+
 
 @app.route('/api/create', methods=['POST'])
 def create():
@@ -30,9 +33,11 @@ def create():
   db.session.commit()
   return {'201', 'to do created successfully'}
 
+
 @app.route('/api/<int:id>')
 def show(id):
   return jsonify([*map(todo_serializer, Todo.query.filter_by(id=id))])
+
 
 @app.route('/api/<int:id>', methods=['POST'])
 def delete(id):
@@ -40,6 +45,19 @@ def delete(id):
   Todo.query.filter_by(id=request_data['id']).delete()
   db.session.commit()
   return {'204': 'item was successfully deleted'}
+
+
+@app.route('/api', methods=['PUT'])
+def update():
+  id = request.args.get('taskId')
+  content =request.get_json()["content"]
+  task = Todo.query.get_or_404(id)
+  # scheme = json(partition=True)
+  # request_data = scheme.loads(request.data, instance=task)
+  task.content = content
+  db.session.commit()
+  return {"msg":"updated"}
+  # scheme.dump(request_data)
 
 if __name__ == '__main__':
   app.run(debug=True)
